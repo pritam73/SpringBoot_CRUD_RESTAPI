@@ -1,5 +1,7 @@
 package com.crud.restapi.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,8 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public User isDataExist(User reqData) {
-		return userRepository.findByEmailAndMobNo(reqData.getEmail(), reqData.getMobNo());
+	public Optional<User> isDataExist(Long id) {
+		return userRepository.findById(id);
 	}
 
 	public Object getUserById(Long id) {

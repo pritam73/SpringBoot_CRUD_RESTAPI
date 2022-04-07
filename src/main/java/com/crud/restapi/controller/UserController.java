@@ -1,6 +1,7 @@
 package com.crud.restapi.controller;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class UserController {
 				ResultDTO<ArrayList<String>> errorPacket = new ResultDTO<>(errorList, "Data must not be null", false);
 				return new ResponseEntity<>(errorPacket, HttpStatus.BAD_REQUEST);
 			}
-			User isData = userService.isDataExist(reqData);
+			Optional<User> isData = userService.isDataExist(reqData.getId());
 			if (isData == null) {
 				responsePacket = new ResultDTO<>(userService.createUser(reqData), "User Created Successfully", true);
 				return new ResponseEntity<>(responsePacket, HttpStatus.OK);
@@ -84,10 +85,10 @@ public class UserController {
 		System.err.println(":::  UserController.updateUser :::");
 		ResultDTO<?> responsePacket = null;
 		try {
-			User isData = userService.isDataExist(reqData);
+			Optional<User> isData = userService.isDataExist(reqData.getId());
 			if (isData != null) {
-				responsePacket = new ResultDTO<>(userService.updateUser(reqData, isData), "User Updated Successfully",
-						true);
+				responsePacket = new ResultDTO<>(userService.updateUser(reqData, isData.get()),
+						"User Updated Successfully", true);
 				return new ResponseEntity<>(responsePacket, HttpStatus.OK);
 			} else {
 				responsePacket = new ResultDTO<>("Record not exist", false);
